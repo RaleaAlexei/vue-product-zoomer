@@ -1,34 +1,24 @@
 <template>
-<div :class="zoomer_box">
-    <div class="preview-box" >
-        <img :src="previewImg.url" 
-             :data-zoom="previewLargeImg.url" 
-             class="responsive-image"
-             draggable="false"
-        />
+  <div :class="zoomer_box">
+    <div class="preview-box">
+      <img :src="previewImg.url" :data-zoom="previewLargeImg.url" class="responsive-image" draggable="false" />
     </div>
     <div class="control-box">
-        <div @click="moveThumbs('left')" class="control">
-          <font-awesome-icon :icon="move_button.left"></font-awesome-icon>
-        </div>
-        <div class="thumb-list">
-              <img @mouseover="chooseThumb(thumb, $event)" 
-                  draggable="false"
-                  v-show="key < options.scroll_items" 
-                  :key="key" 
-                  :src="thumb.url" 
-                  @click="chooseThumb(thumb, $event)" 
-                  v-for="(thumb, key) in thumbs" 
-                  class="responsive-image" 
-                  v-bind:style="{'boxShadow' : thumb.id === choosedThumb.id ? '0px 0px 0px 2px ' + options.choosed_thumb_border_color : ''}"
-                  :class="{'choosed-thumb': thumb.id === choosedThumb.id}">
-        </div>
-        <div @click="moveThumbs('right')" class="control">
-          <font-awesome-icon :icon="move_button.right"></font-awesome-icon>
-        </div>
+      <div v-if="options.show_move_buttons" @click="moveThumbs('left')" class="control">
+        <font-awesome-icon :icon="move_button.left"></font-awesome-icon>
+      </div>
+      <div class="thumb-list">
+        <img @mouseover="chooseThumb(thumb, $event)" draggable="false" v-show="key < options.scroll_items" :key="key"
+          :src="thumb.url" @click="chooseThumb(thumb, $event)" v-for="(thumb, key) in thumbs" class="responsive-image"
+          v-bind:style="{ 'boxShadow': thumb.id === choosedThumb.id ? '0px 0px 0px 2px ' + options.choosed_thumb_border_color : '' }"
+          :class="{ 'choosed-thumb': thumb.id === choosedThumb.id }">
+      </div>
+      <div v-if="options.show_move_buttons" @click="moveThumbs('right')" class="control">
+        <font-awesome-icon :icon="move_button.right"></font-awesome-icon>
+      </div>
     </div>
     <div :id="pane_id" class="pane-container"></div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -39,14 +29,14 @@ export default {
   props: {
     baseZoomerOptions: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       }
     },
     baseImages: {
       type: Object,
       required: true,
-      default: function() {
+      default: function () {
         return {};
       }
     }
@@ -65,31 +55,32 @@ export default {
         'pane': 'container',
         'hoverDelay': 300,
         'namespace': 'container-zoomer',
-        'move_by_click':true,
+        'move_by_click': true,
         'scroll_items': 4,
         'choosed_thumb_border_color': "#ff3d00",
-        'move_button_style': 'chevron'
+        'move_button_style': 'chevron',
+        'show_move_buttons': false,
       }
     };
   },
   computed: {
-    zoomer_box: function() {
+    zoomer_box: function () {
       return this.options.namespace + "-zoomer-box";
     },
-    pane_id: function() {
+    pane_id: function () {
       return this.options.namespace + "-pane-container";
     },
-    move_button: function() {
-      return this.options.move_button_style === 'chevron' ? 
-              {
-                "left": "chevron-left",
-                "right": "chevron-right"
-              }
-              :
-              {
-                "left": "angle-double-left",
-                "right": "angle-double-right"
-              }
+    move_button: function () {
+      return this.options.move_button_style === 'chevron' ?
+        {
+          "left": "chevron-left",
+          "right": "chevron-right"
+        }
+        :
+        {
+          "left": "angle-double-left",
+          "right": "angle-double-right"
+        }
     }
   },
   mounted() {
@@ -98,8 +89,8 @@ export default {
       .setAttribute(
         "style",
         "grid-template-columns: repeat(" +
-          this.baseZoomerOptions.scroll_items +
-          ", auto)"
+        this.baseZoomerOptions.scroll_items +
+        ", auto)"
       );
     let t = setInterval(() => {
       if (document.readyState === "complete") {
@@ -149,7 +140,7 @@ export default {
     }, 500);
   },
   watch: {
-    choosedThumb: function(thumb) {
+    choosedThumb: function (thumb) {
       let matchNormalImg = this.normal_size.find(img => {
         return img.id === thumb.id;
       });
@@ -229,33 +220,40 @@ export default {
 
 <style>
 @import "../assets/drift-zoom/src/css/drift-basic.css";
+
 .preview-box {
   margin-bottom: 1vh;
 }
+
 .control {
   display: grid;
   align-items: center;
   font-size: x-large;
   cursor: pointer;
 }
+
 .control-box {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-column-gap: 5px;
 }
+
 .control-box .thumb-list {
   display: grid;
   grid-column-gap: 4px;
 }
+
 .choosed-thumb {
   border-radius: 0px;
 }
+
 .pane-container {
   display: none;
   position: absolute;
   z-index: 10000;
   pointer-events: none;
 }
+
 .responsive-image {
   height: auto;
   width: 100%;
