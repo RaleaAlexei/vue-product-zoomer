@@ -3,10 +3,9 @@
     <div class="preview-box">
       <img :src="previewImg.url" :data-zoom="previewLargeImg.url" class="responsive-image" draggable="false" />
     </div>
-    <div class="control-box">
+    <div class="control-box" :style="{ gridTemplateColumns: controlBoxGridColumns, columnGap: '5px' }">
       <div v-if="options.show_move_buttons" class="control">
         <font-awesome-icon :icon="move_button.left"></font-awesome-icon>
-        <strong>LEFT CONTROL</strong>
       </div>
       <div class="thumb-list">
         <img @mouseover="chooseThumb(thumb, $event)" draggable="false" v-show="key < options.scroll_items" :key="key"
@@ -82,6 +81,9 @@ export default {
           "left": "angle-double-left",
           "right": "angle-double-right"
         }
+    },
+    controlBoxGridColumns() {
+      return this.options.show_move_buttons ? '1fr auto 1fr' : 'auto';
     }
   },
   mounted() {
@@ -235,8 +237,6 @@ export default {
 
 .control-box {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  grid-column-gap: 5px;
 }
 
 .control-box .thumb-list {
