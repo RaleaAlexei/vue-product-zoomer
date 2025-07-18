@@ -11,7 +11,8 @@
     "lint": "eslint --ext .js,.vue src",
     "build": "NODE_ENV=production node publish/index.js",
     "build-example": "NODE_ENV=example node publish/index.js",
-    "example": "node example/index.js"
+    "example": "node example/index.js",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.2",
