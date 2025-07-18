@@ -4,8 +4,9 @@
       <img :src="previewImg.url" :data-zoom="previewLargeImg.url" class="responsive-image" draggable="false" />
     </div>
     <div class="control-box">
-      <div v-if="options.show_move_buttons" @click="moveThumbs('left')" class="control">
+      <div v-if="options.show_move_buttons" class="control">
         <font-awesome-icon :icon="move_button.left"></font-awesome-icon>
+        <strong>LEFT CONTROL</strong>
       </div>
       <div class="thumb-list">
         <img @mouseover="chooseThumb(thumb, $event)" draggable="false" v-show="key < options.scroll_items" :key="key"
